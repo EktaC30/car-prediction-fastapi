@@ -12,6 +12,11 @@ model = joblib.load(MODEL_PATH)
 encoder = joblib.load(ENCODER_PATH)
 feature_columns = joblib.load(FEATURE_COLUMNS_PATH)
 
+def get_model_info():
+    return {
+        "model_type": type(model).__name__,
+        "n_features": model.n_features_in_
+    }
 
 def predict_price(input_data: dict):
 

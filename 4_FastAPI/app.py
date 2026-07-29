@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from predict import predict_price
+from predict import predict_price, get_model_info
 from defaults import DEFAULTS
 
 app = FastAPI(
@@ -70,3 +70,8 @@ def predict(data: CarInput):
     return {
         "predicted_price": price
     }
+
+@app.get("/model-info")
+
+def model_info():
+    return get_model_info()
