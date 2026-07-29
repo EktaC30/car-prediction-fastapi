@@ -50,7 +50,7 @@ def prepare_data(df):
 
     # categorical columns
     categorical_columns = X.select_dtypes(
-        include=["object", "category"]
+        include=["object", "category", "string"]
     ).columns.tolist()
 
     # numerical columns
@@ -162,16 +162,15 @@ def save_artifacts(model, encoder):
         ENCODER_PATH
     )
 
-    feature_columns = (
+    feature_columns = list(
         encoder.get_feature_names_out()
-        .tolist()
     )
 
     joblib.dump(
         feature_columns,
         FEATURE_COLUMNS_PATH
     )
-
+    
     print("\nArtifacts Saved Successfully")
 
     print(f"Model    : {MODEL_PATH}")
@@ -235,11 +234,44 @@ def main():
             y_test
         )
 
+
+
+        # ==========================================================
+        # VERIFY TRAINING OUTPUT
+        # ==========================================================
+
+        print("\nTRAINING SUMMARY")
+        print("=" * 50)
+
+        print(f"Original X Shape       : {X.shape}")
+
+        print(
+            f"Encoded Train Shape    : "
+            f"{X_train_encoded.shape}"
+        )
+
+        print(
+            f"Encoded Test Shape     : "
+            f"{X_test_encoded.shape}"
+        )
+
+        print(
+            f"Model Features Expected: "
+            f"{model.n_features_in_}"
+        )
+
+        print(
+            f"Saved Feature Count    : "
+            f"{len(encoder.get_feature_names_out())}"
+        )
+
+        print("=" * 50)
+
         # save files
         save_artifacts(
             model,
             encoder
-        )
+)
 
         print(
             "\nTraining Completed Successfully ✅"
